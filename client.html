@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethic Client</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script><!-- Firebase --><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden}
+#particles-js{position:fixed;width:100%;height:100%;z-index:-1}
+header{display:flex;justify-content:space-between;padding:20px 40px;background:rgba(20,20,20,0.6);backdrop-filter:blur(12px);position:sticky;top:0}
+header a{color:#aaa;text-decoration:none;margin-left:20px}
+.hero{text-align:center;padding:120px 20px}
+.logo{width:120px;margin-bottom:20px}
+.btn{margin-top:15px;padding:12px 25px;border:none;border-radius:10px;background:#222;color:#fff;cursor:pointer}
+section{padding:80px 20px;text-align:center;opacity:0;transform:translateY(50px);transition:1s}
+section.show{opacity:1;transform:translateY(0)}
+.card{display:inline-block;background:rgba(30,30,30,0.6);backdrop-filter:blur(20px);padding:25px;margin:15px;border-radius:20px;width:260px}
+input{padding:10px;margin:5px;border-radius:8px;border:none;background:#111;color:#fff}
+iframe{border-radius:15px;margin-top:20px;width:80%;max-width:700px;height:400px}
+.loader{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999}
+.loader.hidden{opacity:0;pointer-events:none}
+</style></head>
+<body><div class="loader" id="loader"><h1>Loading...</h1></div>
+<div id="particles-js"></div><header>
+<div>Ethic Client</div>
+<nav>
+<a href="#showcase">Showcase</a>
+<a href="#pricing">Cennik</a>
+<a href="#login">Login</a>
+</nav>
+</header><div class="hero">
+<img src="logo.png" class="logo">
+<h1>Ethic Client</h1>
+<p>Undetected • Smooth • Powerful</p>
+</div><section id="showcase">
+<h2>Showcase</h2>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+</section><section id="pricing">
+<h2>Cennik</h2>
+<div class="card">25 zł / miesiąc</div>
+<div class="card">35 zł / rok</div>
+<div class="card">50 zł lifetime</div>
+</section><section id="login">
+<h2>Rejestracja / Logowanie</h2>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Hasło"><br>
+<button class="btn" onclick="register()">Zarejestruj</button>
+<button class="btn" onclick="login()">Zaloguj</button>
+<p id="status"></p>
+</section><script>
+// loader
+window.onload=()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000)
+
+// particles
+particlesJS("particles-js",{particles:{number:{value:80},size:{value:2}}})
+
+// scroll reveal
+const sections=document.querySelectorAll("section")
+window.addEventListener("scroll",()=>{
+sections.forEach(s=>{if(s.getBoundingClientRect().top<window.innerHeight-100)s.classList.add("show")})
+})
+
+// FIREBASE CONFIG (TU WSTAW SWOJE DANE)
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_ID"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+function register(){
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('password').value;
+  auth.createUserWithEmailAndPassword(email,pass)
+  .then(()=>document.getElementById('status').innerText="Konto utworzone")
+  .catch(e=>alert(e.message));
+}
+
+function login(){
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('password').value;
+  auth.signInWithEmailAndPassword(email,pass)
+  .then(()=>document.getElementById('status').innerText="Zalogowano")
+  .catch(e=>alert(e.message));
+}
+</script></body>
+</html>
