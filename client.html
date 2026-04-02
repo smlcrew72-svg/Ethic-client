@@ -1,90 +1,212 @@
-<!DOCTYPE html><html lang="pl">
+<!DOCTYPE html>
+<html lang="pl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ethic Client</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script><!-- Firebase --><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script><style>
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+
+<!-- Firebase COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden}
+
 #particles-js{position:fixed;width:100%;height:100%;z-index:-1}
+
 header{display:flex;justify-content:space-between;padding:20px 40px;background:rgba(20,20,20,0.6);backdrop-filter:blur(12px);position:sticky;top:0}
 header a{color:#aaa;text-decoration:none;margin-left:20px}
+
 .hero{text-align:center;padding:120px 20px}
 .logo{width:120px;margin-bottom:20px}
+
 .btn{margin-top:15px;padding:12px 25px;border:none;border-radius:10px;background:#222;color:#fff;cursor:pointer}
+
 section{padding:80px 20px;text-align:center;opacity:0;transform:translateY(50px);transition:1s}
 section.show{opacity:1;transform:translateY(0)}
+
 .card{display:inline-block;background:rgba(30,30,30,0.6);backdrop-filter:blur(20px);padding:25px;margin:15px;border-radius:20px;width:260px}
+
 input{padding:10px;margin:5px;border-radius:8px;border:none;background:#111;color:#fff}
+
 iframe{border-radius:15px;margin-top:20px;width:80%;max-width:700px;height:400px}
+
+/* Opinie */
+.reviews-wrapper{overflow:hidden;width:100%}
+.reviews-track{display:flex;gap:20px;animation:scrollReviews 25s linear infinite}
+.review{min-width:250px;background:rgba(30,30,30,0.6);padding:20px;border-radius:15px;animation:float 3s ease-in-out infinite}
+
+@keyframes scrollReviews{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+100%{transform:translateY(0)}
+}
+
 .loader{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999}
 .loader.hidden{opacity:0;pointer-events:none}
-</style></head>
-<body><div class="loader" id="loader"><h1>Loading...</h1></div>
-<div id="particles-js"></div><header>
+</style>
+</head>
+
+<body>
+
+<div class="loader" id="loader"><h1>Loading...</h1></div>
+<div id="particles-js"></div>
+
+<header>
 <div>Ethic Client</div>
 <nav>
 <a href="#showcase">Showcase</a>
 <a href="#pricing">Cennik</a>
+<a href="#reviews">Opinie</a>
+<a href="#changelog">Changelog</a>
+<a href="#contact">Kontakt</a>
 <a href="#login">Login</a>
 </nav>
-</header><div class="hero">
+</header>
+
+<div class="hero">
 <img src="logo.png" class="logo">
 <h1>Ethic Client</h1>
 <p>Undetected • Smooth • Powerful</p>
-</div><section id="showcase">
+<p id="players">Active players: 0</p>
+</div>
+
+<section id="showcase">
 <h2>Showcase</h2>
-<iframe src="https://vm.tiktok.com/embed/ZNRCo2Bfb/" allowfullscreen></iframe>
-</section><section id="pricing">
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+</section>
+
+<section id="pricing">
 <h2>Cennik</h2>
 <div class="card">25 zł / miesiąc</div>
 <div class="card">35 zł / rok</div>
 <div class="card">50 zł lifetime</div>
-</section><section id="login">
+</section>
+
+<section id="reviews">
+<h2>Opinie</h2>
+<div class="reviews-wrapper">
+<div class="reviews-track" id="reviewsTrack"></div>
+</div>
+</section>
+
+<section id="changelog">
+<h2>Changelog</h2>
+<div class="card">v1.2 – Added AutoTrap</div>
+<div class="card">v1.1 – Improved visuals</div>
+<div class="card">v1.0 – Initial release</div>
+</section>
+
+<section id="contact">
+<h2>Kontakt</h2>
+<div class="card">Discord: <b>sigma_karp1</b></div>
+</section>
+
+<section id="login">
 <h2>Rejestracja / Logowanie</h2>
 <input id="email" placeholder="Email"><br>
 <input id="password" type="password" placeholder="Hasło"><br>
 <button class="btn" onclick="register()">Zarejestruj</button>
 <button class="btn" onclick="login()">Zaloguj</button>
 <p id="status"></p>
-</section><script>
+</section>
+
+<script>
 // loader
 window.onload=()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000)
 
 // particles
 particlesJS("particles-js",{particles:{number:{value:80},size:{value:2}}})
 
-// scroll reveal
-const sections=document.querySelectorAll("section")
-window.addEventListener("scroll",()=>{
-sections.forEach(s=>{if(s.getBoundingClientRect().top<window.innerHeight-100)s.classList.add("show")})
-})
+// smooth scroll kliknięcia
+document.querySelectorAll('header a').forEach(anchor=>{
+anchor.addEventListener('click',function(e){
+e.preventDefault();
+const target=document.querySelector(this.getAttribute('href'));
+window.scrollTo({top:target.offsetTop-60,behavior:'smooth'});
+});
+});
 
-// FIREBASE CONFIG (TU WSTAW SWOJE DANE)
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID"
+// animacje sekcji
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+},{threshold:0.2});
+
+document.querySelectorAll("section").forEach(sec=>{
+observer.observe(sec);
+});
+
+// FAKE PLAYERS
+function updatePlayers(){
+const num=Math.floor(Math.random()*160)+1;
+document.getElementById("players").innerText="Active players: "+num;
+}
+setInterval(updatePlayers,3000);
+updatePlayers();
+
+// OPINIE
+const opinions=[
+"ale śmiga 🔥",
+"zabiłem pełno typa na tym",
+"dojebane visuale",
+"zajebisty AutoTrap",
+"mega smooth client",
+"zero detecta 😎",
+"najlepszy cheat ever",
+"full legit feeling",
+"polecam każdemu",
+"opłaca się 100%"
+];
+
+const track=document.getElementById("reviewsTrack");
+
+for(let i=0;i<30;i++){
+const div=document.createElement("div");
+div.className="review";
+div.innerText=opinions[Math.floor(Math.random()*opinions.length)];
+track.appendChild(div);
+}
+
+// FIREBASE
+const firebaseConfig={
+apiKey:"YOUR_KEY",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_ID"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
 
 function register(){
-  const email=document.getElementById('email').value;
-  const pass=document.getElementById('password').value;
-  auth.createUserWithEmailAndPassword(email,pass)
-  .then(()=>document.getElementById('status').innerText="Konto utworzone")
-  .catch(e=>alert(e.message));
+const email=document.getElementById('email').value;
+const pass=document.getElementById('password').value;
+auth.createUserWithEmailAndPassword(email,pass)
+.then(()=>document.getElementById('status').innerText="Konto utworzone")
+.catch(e=>alert(e.message));
 }
 
 function login(){
-  const email=document.getElementById('email').value;
-  const pass=document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email,pass)
-  .then(()=>document.getElementById('status').innerText="Zalogowano")
-  .catch(e=>alert(e.message));
+const email=document.getElementById('email').value;
+const pass=document.getElementById('password').value;
+auth.signInWithEmailAndPassword(email,pass)
+.then(()=>document.getElementById('status').innerText="Zalogowano")
+.catch(e=>alert(e.message));
 }
-</script></body>
-</html>
+</script>
+
+</body>
+  </html>
