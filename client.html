@@ -20,7 +20,7 @@ body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hid
 /* particles */
 #particles-js{position:fixed;width:100%;height:100%;z-index:-2}
 
-/* 🔥 NAVBAR PREMIUM */
+/* NAVBAR PREMIUM */
 header{
 position:fixed;
 top:0;
@@ -29,15 +29,12 @@ width:100%;
 display:flex;
 justify-content:space-between;
 padding:20px 40px;
-
 background:rgba(10,10,10,0.55);
 backdrop-filter:blur(25px) saturate(180%);
 -webkit-backdrop-filter:blur(25px) saturate(180%);
-
 border-bottom:1px solid rgba(255,255,255,0.05);
 box-shadow:0 0 25px rgba(0,0,0,0.6);
-
-z-index:9999999;
+z-index:2147483647;
 }
 
 header a{
@@ -104,15 +101,13 @@ position:relative;
 z-index:1;
 }
 
-/* 🔥 OPINIE ULTRA FAST */
+/* OPINIE ULTRA FAST */
 .reviews-wrapper{overflow:hidden;width:100%}
-
 .reviews-track{
 display:flex;
 gap:20px;
-animation:scrollReviews 6s linear infinite;
+animation:scrollReviews 3s linear infinite;
 }
-
 .review{
 min-width:250px;
 background:rgba(30,30,30,0.6);
@@ -120,12 +115,10 @@ padding:20px;
 border-radius:15px;
 animation:float 2s ease-in-out infinite;
 }
-
 @keyframes scrollReviews{
 0%{transform:translateX(0)}
 100%{transform:translateX(-100%)}
 }
-
 @keyframes float{
 0%{transform:translateY(0)}
 50%{transform:translateY(-10px)}
@@ -150,7 +143,6 @@ z-index:99999999;
 </head>
 
 <body>
-
 <div class="loader" id="loader"><h1>Loading...</h1></div>
 <div id="particles-js"></div>
 
@@ -214,7 +206,6 @@ z-index:99999999;
 <button class="btn" onclick="logout()">Wyloguj</button>
 
 <p id="status"></p>
-
 <div class="card">
 Status: <span id="license">BRAK</span>
 </div>
@@ -236,50 +227,57 @@ window.scrollTo({top:target.offsetTop-80,behavior:'smooth'});
 });
 });
 
-// animacje sekcji
+// sekcje animacja
 const observer=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
+if(entry.isIntersecting){entry.target.classList.add("show");}
 });
 },{threshold:0.2});
-
 document.querySelectorAll("section").forEach(sec=>observer.observe(sec));
 
-// fake players
-function updatePlayers(){
-const num=Math.floor(Math.random()*160)+1;
-document.getElementById("players").innerText="Active players: "+num;
-}
-setInterval(updatePlayers,3000);
-updatePlayers();
-
-// opinie (DUŻO + LOOP)
-const opinions=[
-"ale śmiga 🔥","zabiłem pełno typa","dojebane visuale",
-"AutoTrap OP","mega smooth","zero detecta 😎",
-"najlepszy cheat","full legit","polecam","opłaca się"
-];
-
+// OPINIE
+const opinions=["ale śmiga 🔥","zabiłem pełno typa","dojebane visuale","AutoTrap OP","mega smooth","zero detecta 😎","najlepszy cheat","full legit","polecam","opłaca się"];
 const track=document.getElementById("reviewsTrack");
-
 for(let i=0;i<80;i++){
 const div=document.createElement("div");
 div.className="review";
 div.innerText=opinions[Math.floor(Math.random()*opinions.length)];
 track.appendChild(div);
 }
+track.innerHTML += track.innerHTML; // loop
 
-track.innerHTML += track.innerHTML;
+// FAKE PLAYERS zależny od godziny
+function getPlayerRange(){
+  const hour = new Date().getHours();
+  if(hour>=0 && hour<6) return {min:5,max:40};
+  if(hour>=6 && hour<12) return {min:20,max:100};
+  if(hour>=12 && hour<22) return {min:60,max:160};
+  return {min:30,max:90};
+}
+function initPlayers(){
+  const saved = localStorage.getItem("players");
+  if(saved) return parseInt(saved);
+  const range = getPlayerRange();
+  const start = Math.floor(Math.random()*(range.max-range.min+1))+range.min;
+  localStorage.setItem("players",start);
+  return start;
+}
+let currentPlayers = initPlayers();
+function renderPlayers(){document.getElementById("players").innerText="Active players: "+currentPlayers;}
+renderPlayers();
+setInterval(()=>{
+  const range = getPlayerRange();
+  const change = Math.random()>0.5?1:-1;
+  let newValue = currentPlayers+change;
+  if(newValue<range.min) newValue=range.min;
+  if(newValue>range.max) newValue=range.max;
+  currentPlayers=newValue;
+  localStorage.setItem("players",currentPlayers);
+  renderPlayers();
+},60000); // 1 minuta
 
 // FIREBASE
-const firebaseConfig={
-apiKey:"YOUR_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_ID"
-};
-
+const firebaseConfig={apiKey:"YOUR_KEY",authDomain:"YOUR_DOMAIN",projectId:"YOUR_ID"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 const status=document.getElementById("status");
@@ -287,9 +285,7 @@ const status=document.getElementById("status");
 function register(){
 const email=emailInput();
 const pass=passInput();
-
 if(pass.length<6)return status.innerText="Hasło min. 6 znaków";
-
 auth.createUserWithEmailAndPassword(email,pass)
 .then(()=>status.innerText="✅ Konto utworzone")
 .catch(e=>status.innerText="❌ "+e.message);
@@ -301,10 +297,7 @@ auth.signInWithEmailAndPassword(emailInput(),passInput())
 .catch(e=>status.innerText="❌ "+e.message);
 }
 
-function logout(){
-auth.signOut();
-}
-
+function logout(){auth.signOut();}
 function emailInput(){return document.getElementById('email').value.trim();}
 function passInput(){return document.getElementById('password').value.trim();}
 
@@ -322,4 +315,4 @@ document.getElementById("pricing").style.opacity="0.3";
 </script>
 
 </body>
-  </html>
+</html>
