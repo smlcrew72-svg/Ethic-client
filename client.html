@@ -1,318 +1,86 @@
-<!DOCTYPE html>
-<html lang="pl">
+<!DOCTYPE html><html lang="pl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ethic Dlc</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
+<title>Ethic Client</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden}
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}/* Snow */ .snowflake { position: fixed; top: -10px; color: white; font-size: 10px; animation: fall linear infinite; }
 
-/* particles */
-#particles-js{position:fixed;width:100%;height:100%;z-index:-2}
+@keyframes fall { to { transform: translateY(110vh); } }
 
-/* NAVBAR PREMIUM */
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-display:flex;
-justify-content:space-between;
-padding:20px 40px;
-background:rgba(10,10,10,0.55);
-backdrop-filter:blur(25px) saturate(180%);
--webkit-backdrop-filter:blur(25px) saturate(180%);
-border-bottom:1px solid rgba(255,255,255,0.05);
-box-shadow:0 0 25px rgba(0,0,0,0.6);
-z-index:2147483647;
-}
+/* Navbar */ .navbar { position: fixed; top: 0; width: 100%; backdrop-filter: blur(12px); background: rgba(255,255,255,0.05); display: flex; justify-content: space-between; padding: 15px 30px; z-index: 9999; }
 
-header a{
-color:#aaa;
-text-decoration:none;
-margin-left:20px;
-transition:0.3s;
-}
+.nav-left { font-weight: bold; }
 
-header a:hover{
-color:#fff;
-text-shadow:0 0 8px rgba(255,255,255,0.4);
-}
+.nav-right a { margin-left: 20px; color: white; text-decoration: none; cursor: pointer; }
 
-.hero{text-align:center;padding:160px 20px}
-.logo{width:120px;margin-bottom:20px}
+/* Sections */ .section { padding: 120px 20px; text-align: center; }
 
-.btn{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:#222;
-color:#fff;
-cursor:pointer
-}
+/* Video */ .video-box { margin: 40px auto; width: 80%; max-width: 800px; border-radius: 20px; overflow: hidden; }
 
-section{
-padding:80px 20px;
-text-align:center;
-opacity:0;
-transform:translateY(50px);
-transition:1s
-}
-section.show{opacity:1;transform:translateY(0)}
+iframe { width: 100%; height: 450px; border: none; }
 
-.card{
-display:inline-block;
-background:rgba(30,30,30,0.6);
-backdrop-filter:blur(20px);
-padding:25px;
-margin:15px;
-border-radius:20px;
-width:260px
-}
+/* Pricing */ .pricing { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
 
-input{
-padding:10px;
-margin:5px;
-border-radius:8px;
-border:none;
-background:#111;
-color:#fff
-}
+.card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; width: 200px; }
 
-/* iframe FIX */
-iframe{
-border-radius:15px;
-margin-top:20px;
-width:80%;
-max-width:700px;
-height:400px;
-position:relative;
-z-index:1;
-}
-
-/* OPINIE ULTRA FAST */
-.reviews-wrapper{overflow:hidden;width:100%}
-.reviews-track{
-display:flex;
-gap:20px;
-animation:scrollReviews 3s linear infinite;
-}
-.review{
-min-width:250px;
-background:rgba(30,30,30,0.6);
-padding:20px;
-border-radius:15px;
-animation:float 2s ease-in-out infinite;
-}
-@keyframes scrollReviews{
-0%{transform:translateX(0)}
-100%{transform:translateX(-100%)}
-}
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-100%{transform:translateY(0)}
-}
-
-/* loader */
-.loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:99999999;
-}
-.loader.hidden{opacity:0;pointer-events:none}
 </style>
 </head>
-
-<body>
-<div class="loader" id="loader"><h1>Loading...</h1></div>
-<div id="particles-js"></div>
-
-<header>
-<div>Ethic Dlc</div>
-<nav>
-<a href="#showcase">Showcase</a>
-<a href="#pricing">Cennik</a>
-<a href="#reviews">Opinie</a>
-<a href="#changelog">Changelog</a>
-<a href="#contact">Kontakt</a>
-<a href="#login">Login</a>
-</nav>
-</header>
-
-<div class="hero">
-<img src="logo.png" class="logo">
-<h1>Ethic Dlc</h1>
-<p>Undetected • Smooth • Powerful</p>
-<p id="players">Active players: 0</p>
+<body><div class="navbar">
+    <div class="nav-left">Ethic Client</div>
+    <div class="nav-right">
+        <a href="#pricing">Cennik</a>
+        <a href="#contact">Kontakt</a>
+        <a href="#">Telegram</a>
+        <a href="#">Discord</a>
+    </div>
+</div><div class="section">
+    <h1>Ethic Client</h1>
+    <p>Najlepszy client 🔥</p><div class="video-box">
+    <iframe src="https://www.youtube.com/embed/RjGXUU9PKHc"></iframe>
 </div>
 
-<section id="showcase">
-<h2>Showcase</h2>
-<iframe src="https://www.youtube.com/embed/RjGXUU9PKHc" allowfullscreen></iframe>
-</section>
+</div><div id="pricing" class="section">
+    <h2>Cennik</h2>
+    <div class="pricing">
+        <div class="card">
+            <h3>Lifetime</h3>
+            <p>50 zł</p>
+        </div>
+        <div class="card">
+            <h3>Rok</h3>
+            <p>35 zł</p>
+        </div>
+        <div class="card">
+            <h3>Miesiąc</h3>
+            <p>20 zł</p>
+        </div>
+    </div><p>Metody płatności:</p>
+<p>BLIK, Przelew, PSC (+12%), Krypto (LTC, BTC)</p>
 
-<section id="pricing">
-<h2>Cennik</h2>
-<div class="card">25 zł / miesiąc</div>
-<div class="card">35 zł / rok</div>
-<div class="card">50 zł lifetime</div>
-</section>
+</div><div id="contact" class="section">
+    <h2>Kontakt</h2>
+    <p>Dodaj tutaj swoje dane kontaktowe</p>
+</div><script>
+function createSnowflake() {
+    const snow = document.createElement('div');
+    snow.classList.add('snowflake');
+    snow.innerText = '•';
+    snow.style.left = Math.random() * window.innerWidth + 'px';
+    snow.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    document.body.appendChild(snow);
 
-<section id="reviews">
-<h2>Opinie</h2>
-<div class="reviews-wrapper">
-<div class="reviews-track" id="reviewsTrack"></div>
-</div>
-</section>
-
-<section id="changelog">
-<h2>Changelog</h2>
-<div class="card">v1.2 – Added AutoTrap</div>
-<div class="card">v1.1 – Improved visuals</div>
-<div class="card">v1.0 – Initial release</div>
-</section>
-
-<section id="contact">
-<h2>Kontakt</h2>
-<div class="card">Discord: <b>sigma_karp1</b></div>
-</section>
-
-<section id="login">
-<h2>Rejestracja / Logowanie</h2>
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Hasło"><br>
-
-<button class="btn" onclick="register()">Zarejestruj</button>
-<button class="btn" onclick="login()">Zaloguj</button>
-<button class="btn" onclick="logout()">Wyloguj</button>
-
-<p id="status"></p>
-<div class="card">
-Status: <span id="license">BRAK</span>
-</div>
-</section>
-
-<script>
-// loader
-window.onload=()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000)
-
-// particles
-particlesJS("particles-js",{particles:{number:{value:80},size:{value:2}}})
-
-// smooth scroll
-document.querySelectorAll('header a').forEach(anchor=>{
-anchor.addEventListener('click',function(e){
-e.preventDefault();
-const target=document.querySelector(this.getAttribute('href'));
-window.scrollTo({top:target.offsetTop-80,behavior:'smooth'});
-});
-});
-
-// sekcje animacja
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){entry.target.classList.add("show");}
-});
-},{threshold:0.2});
-document.querySelectorAll("section").forEach(sec=>observer.observe(sec));
-
-// OPINIE
-const opinions=["ale śmiga 🔥","zabiłem pełno typa","dojebane visuale","AutoTrap OP","mega smooth","zero detecta 😎","najlepszy cheat","full legit","polecam","opłaca się"];
-const track=document.getElementById("reviewsTrack");
-for(let i=0;i<80;i++){
-const div=document.createElement("div");
-div.className="review";
-div.innerText=opinions[Math.floor(Math.random()*opinions.length)];
-track.appendChild(div);
-}
-track.innerHTML += track.innerHTML; // loop
-
-// FAKE PLAYERS zależny od godziny
-function getPlayerRange(){
-  const hour = new Date().getHours();
-  if(hour>=0 && hour<6) return {min:5,max:40};
-  if(hour>=6 && hour<12) return {min:20,max:100};
-  if(hour>=12 && hour<22) return {min:60,max:160};
-  return {min:30,max:90};
-}
-function initPlayers(){
-  const saved = localStorage.getItem("players");
-  if(saved) return parseInt(saved);
-  const range = getPlayerRange();
-  const start = Math.floor(Math.random()*(range.max-range.min+1))+range.min;
-  localStorage.setItem("players",start);
-  return start;
-}
-let currentPlayers = initPlayers();
-function renderPlayers(){document.getElementById("players").innerText="Active players: "+currentPlayers;}
-renderPlayers();
-setInterval(()=>{
-  const range = getPlayerRange();
-  const change = Math.random()>0.5?1:-1;
-  let newValue = currentPlayers+change;
-  if(newValue<range.min) newValue=range.min;
-  if(newValue>range.max) newValue=range.max;
-  currentPlayers=newValue;
-  localStorage.setItem("players",currentPlayers);
-  renderPlayers();
-},60000); // 1 minuta
-
-// FIREBASE
-const firebaseConfig={apiKey:"YOUR_KEY",authDomain:"YOUR_DOMAIN",projectId:"YOUR_ID"};
-firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth();
-const status=document.getElementById("status");
-
-function register(){
-const email=emailInput();
-const pass=passInput();
-if(pass.length<6)return status.innerText="Hasło min. 6 znaków";
-auth.createUserWithEmailAndPassword(email,pass)
-.then(()=>status.innerText="✅ Konto utworzone")
-.catch(e=>status.innerText="❌ "+e.message);
+    setTimeout(() => {
+        snow.remove();
+    }, 5000);
 }
 
-function login(){
-auth.signInWithEmailAndPassword(emailInput(),passInput())
-.then(()=>status.innerText="✅ Zalogowano")
-.catch(e=>status.innerText="❌ "+e.message);
-}
-
-function logout(){auth.signOut();}
-function emailInput(){return document.getElementById('email').value.trim();}
-function passInput(){return document.getElementById('password').value.trim();}
-
-auth.onAuthStateChanged(user=>{
-if(user){
-status.innerText="👤 "+user.email;
-document.getElementById("license").innerText="AKTYWNA";
-document.getElementById("pricing").style.opacity="1";
-}else{
-status.innerText=" Nie jesteś zalogowany";
-document.getElementById("license").innerText="BRAK";
-document.getElementById("pricing").style.opacity="0.3";
-}
-});
-</script>
-
-</body>
+setInterval(createSnowflake, 100);
+</script></body>
 </html>
