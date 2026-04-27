@@ -4,224 +4,191 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ethic Client</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"><style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #0a0a0a;
-    color: white;
-    overflow-x: hidden;
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:#050505;
+ color:white;
+ overflow:hidden;
 }
 
-/* ===== MOVING LIGHT ===== */
-.light {
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
-    background: radial-gradient(circle, rgba(255,100,200,0.15), transparent 60%);
-    animation: moveLight 30s ease-in-out infinite;
-    z-index: -1;
+/* ===== BACKGROUND LIGHT ===== */
+.bg{
+ position:fixed;
+ width:200%;
+ height:200%;
+ top:-50%;
+ left:-50%;
+ background:linear-gradient(120deg,transparent 40%,rgba(255,120,200,0.07) 50%,transparent 60%);
+ animation:move 15s linear infinite;
+ z-index:-1;
+}
+@keyframes move{
+ 0%{transform:translateX(-20%)}
+ 100%{transform:translateX(20%)}
 }
 
-@keyframes moveLight {
-    0% { transform: translate(0,0); }
-    50% { transform: translate(10%, 15%); }
-    100% { transform: translate(0,0); }
+/* ===== NAVBAR ===== */
+.navbar{
+ position:fixed;
+ top:15px;
+ left:50%;
+ transform:translateX(-50%);
+ width:92%;
+ padding:12px 20px;
+ border-radius:40px;
+ background:rgba(255,255,255,0.06);
+ backdrop-filter:blur(25px);
+ border:1px solid rgba(255,255,255,0.08);
+ display:flex;
+ justify-content:space-between;
+ z-index:1000;
 }
 
-/* ===== ANIMATED GRADIENT TEXT ===== */
-h1 {
-    font-size: 50px;
-    background: linear-gradient(90deg, #ff6ec7, #ff9bdc, #ff6ec7);
-    background-size: 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientMove 6s linear infinite;
+.nav-right a{
+ margin-left:15px;
+ color:#eee;
+ text-decoration:none;
+ cursor:pointer;
+ transition:0.3s;
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0%; }
-    100% { background-position: 200%; }
+.nav-right a:hover{
+ opacity:0.6;
 }
 
-/* ===== LIQUID NAVBAR ===== */
-.navbar {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 85%;
-    padding: 15px 30px;
-    border-radius: 60px;
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(30px);
-    box-shadow: inset 0 0 25px rgba(255,255,255,0.2);
-    display: flex;
-    justify-content: space-between;
-    z-index: 9999;
+/* ===== PAGES ===== */
+.page{
+ position:absolute;
+ width:100%;
+ height:100vh;
+ top:0;
+ left:0;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ opacity:0;
+ pointer-events:none;
+ transform:translateY(20px);
+ transition:0.6s ease;
 }
 
-.nav-right a {
-    margin-left: 20px;
-    color: white;
-    text-decoration: none;
+.page.active{
+ opacity:1;
+ pointer-events:auto;
+ transform:translateY(0);
 }
 
-.section {
-    padding: 150px 20px;
-    text-align: center;
+h1{
+ font-size:42px;
+ background:linear-gradient(90deg,#ff6ec7,#ffb3e6,#ff6ec7);
+ background-size:200%;
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+ animation:grad 6s linear infinite;
+}
+@keyframes grad{
+ 0%{background-position:0%}
+ 100%{background-position:200%}
 }
 
-/* ===== VIDEO (NO GLOW) ===== */
-.video-box {
-    margin: 40px auto;
-    width: 80%;
-    max-width: 800px;
-    border-radius: 25px;
-    overflow: hidden;
+/* ===== LIQUID BOX ===== */
+.box{
+ background:rgba(255,255,255,0.05);
+ backdrop-filter:blur(20px);
+ border-radius:20px;
+ border:1px solid rgba(255,255,255,0.08);
+ padding:20px;
 }
 
-iframe {
-    width: 100%;
-    height: 450px;
+/* VIDEO */
+.video-box{
+ width:90%;
+ max-width:700px;
+ border-radius:20px;
+ overflow:hidden;
+}
+iframe{
+ width:100%;
+ height:250px;
 }
 
-/* ===== CARDS ===== */
-.card {
-    background: rgba(255,255,255,0.05);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    margin: 10px;
-}
+/* PRICING */
+.pricing{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
+.card{width:150px;padding:15px;border-radius:15px;background:rgba(255,255,255,0.05)}
+.price{margin:5px 0}
+.buy{width:100%;padding:8px;border-radius:10px;border:none;background:linear-gradient(90deg,#ff6ec7,#ff9bdc);color:white}
 
-.pricing {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+/* LOGIN */
+input{width:100%;margin:6px 0;padding:10px;border-radius:10px;border:none}
+.btn{width:100%;padding:10px;border:none;border-radius:12px;background:linear-gradient(90deg,#ff6ec7,#ff9bdc);color:white}
 
-.buy-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: none;
-    background: linear-gradient(90deg, #ff6ec7, #ff9bdc);
-    color: white;
-    cursor: pointer;
+@media(min-width:700px){
+ iframe{height:400px}
+ h1{font-size:55px}
 }
-
-/* ===== LOGIN ===== */
-.login-box {
-    margin: 40px auto;
-    width: 300px;
-    padding: 20px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px);
-}
-
-input {
-    width: 90%;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-}
-
-button.login {
-    width: 100%;
-    padding: 10px;
-    border-radius: 15px;
-    border: none;
-    background: linear-gradient(90deg, #ff6ec7, #ff9bdc);
-    color: white;
-}
-
-/* ===== PANEL ===== */
-.panel {
-    display: none;
-    padding: 150px 20px;
-    text-align: center;
-}
-
-.panel-box {
-    background: rgba(255,255,255,0.05);
-    padding: 30px;
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    max-width: 600px;
-    margin: auto;
-}
-
-.download-btn {
-    padding: 12px 25px;
-    border-radius: 20px;
-    border: none;
-    background: linear-gradient(90deg, #ff6ec7, #ff9bdc);
-    color: white;
-    margin-top: 20px;
-}
-
 </style></head>
-<body><div class="light"></div><div class="navbar">
-    <div>Ethic Client</div>
-    <div class="nav-right">
-        <a href="#pricing">Cennik</a>
-        <a href="#login">Login</a>
-        <a href="#">Discord</a>
-    </div>
-</div><div class="section" id="home">
-    <h1>Ethic Client</h1>
-    <div class="video-box">
-        <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
-    </div>
-</div><div id="pricing" class="section">
-    <h2>Cennik</h2>
-    <div class="pricing">
-        <div class="card">
-            <h3>Lifetime</h3>
-            <p>50 zł</p>
-            <button class="buy-btn" onclick="buy()">Kup</button>
-        </div>
-        <div class="card">
-            <h3>Rok</h3>
-            <p>35 zł</p>
-            <button class="buy-btn" onclick="buy()">Kup</button>
-        </div>
-        <div class="card">
-            <h3>Miesiąc</h3>
-            <p>20 zł</p>
-            <button class="buy-btn" onclick="buy()">Kup</button>
-        </div>
-    </div>
-    <p>BLIK • Przelew • PSC (+12%) • BTC • LTC</p>
-</div><div id="login" class="section">
-    <h2>Login</h2>
-    <div class="login-box">
-        <input id="user" placeholder="Login">
-        <input id="pass" type="password" placeholder="Hasło">
-        <button class="login" onclick="login()">Zaloguj</button>
-    </div>
-</div><div id="panel" class="panel">
-    <div class="panel-box">
-        <h2>Panel klienta</h2>
-        <p>Witaj w panelu 👋</p>
-        <button class="download-btn">Download Client</button>
-        <p style="margin-top:20px;">Changelog:
-        <br>• Update 1.0
-        <br>• Fix bugów
-        </p>
-    </div>
+<body><div class="bg"></div><div class="navbar">
+ <div>Ethic</div>
+ <div class="nav-right">
+  <a onclick="show('home')">Home</a>
+  <a onclick="show('pricing')">Cennik</a>
+  <a onclick="show('login')">Login</a>
+ </div>
+</div><!-- HOME --><div id="home" class="page active">
+ <h1>Ethic Client</h1>
+ <div class="video-box box">
+  <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
+ </div>
+</div><!-- PRICING --><div id="pricing" class="page">
+ <h1>Cennik</h1>
+ <div class="pricing">
+  <div class="card box">
+   Lifetime
+   <div class="price">50 zł</div>
+   <button class="buy" onclick="buy()">Kup</button>
+  </div>
+  <div class="card box">
+   Rok
+   <div class="price">35 zł</div>
+   <button class="buy" onclick="buy()">Kup</button>
+  </div>
+  <div class="card box">
+   Miesiąc
+   <div class="price">20 zł</div>
+   <button class="buy" onclick="buy()">Kup</button>
+  </div>
+ </div>
+ <div style="margin-top:20px;opacity:0.8">BLIK • Przelew • PSC (+12%) • LTC • BTC</div>
+</div><!-- LOGIN --><div id="login" class="page">
+ <h1>Login</h1>
+ <div class="box" style="width:260px">
+  <input placeholder="Login">
+  <input type="password" placeholder="Hasło">
+  <button class="btn" onclick="panel()">Zaloguj</button>
+ </div>
+</div><!-- PANEL --><div id="panel" class="page">
+ <h1>Panel</h1>
+ <div class="box" style="max-width:500px">
+  <p>Download client</p>
+  <button class="btn">Download</button>
+  <p style="margin-top:15px">Kontakt:</p>
+  <p>Discord: ...</p>
+  <p>Telegram: ...</p>
+ </div>
 </div><script>
-function buy() {
-    window.location.href = "https://discord.gg/TWOJ_LINK";
+function show(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
 }
 
-function login() {
-    document.getElementById('panel').style.display = 'block';
-    document.getElementById('login').style.display = 'none';
+function buy(){
+ window.location.href="https://discord.gg/TWOJ_LINK";
+}
+
+function panel(){
+ show('panel');
 }
 </script></body>
 </html>
