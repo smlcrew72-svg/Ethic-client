@@ -1,243 +1,736 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ethic Client</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
- margin:0;
- font-family:'Poppins',sans-serif;
- background:#050505;
- color:white;
- overflow:hidden;
+    font-family:'Inter',sans-serif;
+    background:#050505;
+    color:white;
+    overflow-x:hidden;
 }
 
-/* ===== CURSOR LIGHT ===== */
+/* ===== BACKGROUND ===== */
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255,255,255,0.04), transparent 30%),
+    linear-gradient(to bottom,#0a0a0a,#030303);
+    z-index:-3;
+}
+
+.noise{
+    position:fixed;
+    inset:0;
+    background-image:url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity:0.03;
+    z-index:-2;
+}
+
 .cursor-light{
- position:fixed;
- width:300px;
- height:300px;
- border-radius:50%;
- pointer-events:none;
- background:radial-gradient(circle,rgba(255,120,200,0.15),transparent 70%);
- transform:translate(-50%,-50%);
- z-index:0;
-}
-
-/* ===== MOVING LINES ===== */
-.bg{
- position:fixed;
- width:200%;
- height:200%;
- top:-50%;
- left:-50%;
- background:linear-gradient(120deg,transparent 40%,rgba(255,120,200,0.06) 50%,transparent 60%);
- animation:move 20s linear infinite;
- z-index:-1;
-}
-@keyframes move{
- 0%{transform:translateX(-20%) rotate(10deg)}
- 100%{transform:translateX(20%) rotate(10deg)}
+    position:fixed;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,0.10),transparent 70%);
+    transform:translate(-50%,-50%);
+    z-index:-1;
+    filter:blur(20px);
 }
 
 /* ===== NAVBAR ===== */
+
 .navbar{
- position:fixed;
- top:15px;
- left:50%;
- transform:translateX(-50%);
- width:92%;
- padding:12px 20px;
- border-radius:40px;
- background:rgba(255,255,255,0.06);
- backdrop-filter:blur(30px);
- border:1px solid rgba(255,255,255,0.1);
- display:flex;
- justify-content:space-between;
- z-index:1000;
+    position:fixed;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:1350px;
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 26px;
+
+    border-radius:28px;
+
+    background:rgba(255,255,255,0.06);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+
+    box-shadow:
+    inset 0 1px rgba(255,255,255,0.14),
+    0 10px 40px rgba(0,0,0,0.45);
+
+    z-index:999;
 }
 
-.nav-right a{
- margin-left:15px;
- color:#eee;
- text-decoration:none;
- cursor:pointer;
- transition:0.3s;
-}
-.nav-right a:hover{opacity:0.6}
+.logo{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:0.5px;
 
-/* ===== PAGES SYSTEM ===== */
+    background:linear-gradient(90deg,#fff,#bdbdbd);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.nav-links a{
+    position:relative;
+    color:rgba(255,255,255,0.85);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+
+    padding:12px 18px;
+
+    border-radius:16px;
+
+    transition:0.25s;
+    cursor:pointer;
+}
+
+.nav-links a:hover{
+    background:rgba(255,255,255,0.07);
+    color:white;
+}
+
+.download-btn{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.download-btn:hover{
+    background:white;
+    color:black !important;
+}
+
+/* ===== PAGE ===== */
+
 .page{
- position:absolute;
- width:100%;
- height:100vh;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- opacity:0;
- pointer-events:none;
- transform:translateY(30px);
- transition:0.6s ease;
+    min-height:100vh;
+    width:100%;
+
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:130px 20px 80px;
 }
+
 .page.active{
- opacity:1;
- pointer-events:auto;
- transform:translateY(0);
+    display:flex;
 }
 
-/* ===== TEXT ===== */
+/* ===== HERO ===== */
+
+.hero{
+    width:100%;
+    max-width:1300px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:60px;
+}
+
+.hero-left{
+    flex:1;
+}
+
+.tag{
+    width:max-content;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(20px);
+
+    font-size:13px;
+    color:rgba(255,255,255,0.8);
+
+    margin-bottom:24px;
+}
+
 h1{
- font-size:42px;
- background:linear-gradient(90deg,#ff6ec7,#ffb3e6,#ff6ec7);
- background-size:200%;
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
- animation:grad 6s linear infinite;
-}
-@keyframes grad{
- 0%{background-position:0%}
- 100%{background-position:200%}
+    font-size:76px;
+    line-height:0.95;
+    font-weight:700;
+    letter-spacing:-3px;
+
+    margin-bottom:22px;
 }
 
-/* ===== LIQUID BOX ===== */
-.box{
- background:rgba(255,255,255,0.05);
- backdrop-filter:blur(25px);
- border-radius:20px;
- border:1px solid rgba(255,255,255,0.1);
- padding:20px;
+.gradient{
+    background:linear-gradient(90deg,#ffffff,#9c9c9c,#ffffff);
+    background-size:200%;
+    animation:shine 8s linear infinite;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-/* VIDEO */
-.video-box{width:90%;max-width:700px;border-radius:20px;overflow:hidden}
-iframe{width:100%;height:260px}
+@keyframes shine{
+    0%{background-position:0%}
+    100%{background-position:200%}
+}
 
-/* PRICING */
-.pricing{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
-.card{width:150px;padding:15px;border-radius:15px;background:rgba(255,255,255,0.05)}
-.price{margin:5px 0}
-.buy{width:100%;padding:8px;border-radius:10px;border:none;background:linear-gradient(90deg,#ff6ec7,#ff9bdc);color:white}
+.desc{
+    max-width:620px;
+    font-size:17px;
+    line-height:1.8;
+    color:rgba(255,255,255,0.65);
 
-/* LOGIN */
-input{width:100%;margin:6px 0;padding:10px;border-radius:10px;border:none}
-.btn{width:100%;padding:10px;border:none;border-radius:12px;background:linear-gradient(90deg,#ff6ec7,#ff9bdc);color:white}
+    margin-bottom:38px;
+}
 
-@media(min-width:700px){iframe{height:400px}h1{font-size:55px}}
+.hero-buttons{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    height:54px;
+    padding:0 28px;
+
+    border:none;
+    border-radius:18px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:600;
+
+    transition:0.3s;
+
+    backdrop-filter:blur(20px);
+}
+
+.primary{
+    background:white;
+    color:black;
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(255,255,255,0.15);
+}
+
+.secondary{
+    background:rgba(255,255,255,0.06);
+    color:white;
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.secondary:hover{
+    background:rgba(255,255,255,0.1);
+}
+
+/* ===== PREVIEW ===== */
+
+.preview{
+    flex:1;
+
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.preview-card{
+    width:520px;
+    height:320px;
+
+    border-radius:32px;
+
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.03)
+    );
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(30px);
+
+    overflow:hidden;
+
+    position:relative;
+
+    box-shadow:
+    0 30px 80px rgba(0,0,0,0.55),
+    inset 0 1px rgba(255,255,255,0.12);
+}
+
+.preview-card::before{
+    content:'';
+    position:absolute;
+    inset:-40%;
+
+    background:
+    radial-gradient(circle,rgba(255,255,255,0.18),transparent 40%);
+
+    animation:rotate 18s linear infinite;
+}
+
+@keyframes rotate{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+}
+
+.preview-inner{
+    position:absolute;
+    inset:0;
+
+    padding:28px;
+}
+
+.topbar{
+    display:flex;
+    gap:10px;
+    margin-bottom:28px;
+}
+
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.3);
+}
+
+.fake-ui{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.fake-box{
+    height:90px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.05);
+
+    backdrop-filter:blur(20px);
+}
+
+/* ===== PRICING ===== */
+
+.section-title{
+    font-size:56px;
+    margin-bottom:50px;
+    letter-spacing:-2px;
+}
+
+.pricing{
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.card{
+    width:320px;
+
+    padding:28px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(30px);
+
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    background:rgba(255,255,255,0.07);
+}
+
+.plan{
+    font-size:14px;
+    color:rgba(255,255,255,0.6);
+    margin-bottom:12px;
+}
+
+.price{
+    font-size:48px;
+    font-weight:700;
+    margin-bottom:24px;
+}
+
+.card ul{
+    list-style:none;
+    margin-bottom:26px;
+}
+
+.card li{
+    margin-bottom:12px;
+    color:rgba(255,255,255,0.7);
+}
+
+.buy{
+    width:100%;
+    height:52px;
+
+    border:none;
+    border-radius:18px;
+
+    background:white;
+    color:black;
+
+    font-weight:600;
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.buy:hover{
+    transform:scale(1.02);
+}
+
+/* ===== CONTACT ===== */
+
+.contact-box{
+    width:100%;
+    max-width:650px;
+
+    padding:36px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(30px);
+
+    text-align:center;
+}
+
+.contact-box p{
+    margin:16px 0;
+    color:rgba(255,255,255,0.7);
+    font-size:18px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:1000px){
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .tag{
+        margin:auto auto 24px;
+    }
+
+    h1{
+        font-size:58px;
+    }
+
+    .desc{
+        margin:auto auto 38px;
+    }
+
+    .hero-buttons{
+        justify-content:center;
+    }
+
+    .preview-card{
+        width:100%;
+        max-width:520px;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .navbar{
+        height:auto;
+        padding:16px;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    h1{
+        font-size:42px;
+        letter-spacing:-2px;
+    }
+
+    .section-title{
+        font-size:40px;
+    }
+
+    .card{
+        width:100%;
+        max-width:340px;
+    }
+
+}
+
 </style>
 </head>
 <body>
 
-<div class="bg"></div>
+<div class="noise"></div>
 <div class="cursor-light" id="light"></div>
 
+<!-- NAVBAR -->
+
 <div class="navbar">
- <div>Ethic</div>
- <div class="nav-right">
-  <a onclick="show('home')">Home</a>
-  <a onclick="show('pricing')">Cennik</a>
-  <a onclick="show('login')">Login</a>
-  <a onclick="show('contact')">Kontakt</a>
- </div>
+
+    <div class="logo">Ethic Client</div>
+
+    <div class="nav-links">
+        <a onclick="show('home')">Home</a>
+        <a onclick="show('pricing')">Pricing</a>
+        <a onclick="show('contact')">Contact</a>
+        <a class="download-btn" onclick="download()">Download</a>
+    </div>
+
 </div>
 
 <!-- HOME -->
-<div id="home" class="page active">
- <h1>Ethic Client</h1>
- <div class="video-box box">
-  <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
- </div>
-</div>
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+        <div class="hero-left">
+
+            <div class="tag">
+                Private Minecraft Client
+            </div>
+
+            <h1>
+                <span class="gradient">
+                    Ethic<br>
+                    Client
+                </span>
+            </h1>
+
+            <p class="desc">
+                Advanced ghost client with premium visuals, smooth experience
+                and private access. Designed with a modern liquid glass UI
+                inspired by iOS aesthetics.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="btn primary" onclick="show('pricing')">
+                    Buy Access
+                </button>
+
+                <button class="btn secondary" onclick="download()">
+                    Download
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="preview">
+
+            <div class="preview-card">
+
+                <div class="preview-inner">
+
+                    <div class="topbar">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+
+                    <div class="fake-ui">
+                        <div class="fake-box"></div>
+                        <div class="fake-box"></div>
+                        <div class="fake-box"></div>
+                        <div class="fake-box"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- PRICING -->
-<div id="pricing" class="page">
- <h1>Cennik</h1>
- <div class="pricing">
-  <div class="card box">
-   Lifetime
-   <div class="price">50 zł</div>
-   <button class="buy" onclick="buy()">Kup</button>
-  </div>
-  <div class="card box">
-   Rok
-   <div class="price">35 zł</div>
-   <button class="buy" onclick="buy()">Kup</button>
-  </div>
-  <div class="card box">
-   Miesiąc
-   <div class="price">20 zł</div>
-   <button class="buy" onclick="buy()">Kup</button>
-  </div>
- </div>
- <div style="margin-top:20px;opacity:0.8">BLIK • Przelew • PSC (+12%) • LTC • BTC</div>
-</div>
 
-<!-- LOGIN -->
-<div id="login" class="page">
- <h1>Login</h1>
- <div class="box" style="width:260px">
-  <input id="user" placeholder="Login">
-  <input id="pass" type="password" placeholder="Hasło">
-  <button class="btn" onclick="login()">Zaloguj</button>
- </div>
-</div>
+<section id="pricing" class="page">
 
-<!-- PANEL -->
-<div id="panel" class="page">
- <h1>Panel</h1>
- <div class="box" style="max-width:500px">
-  <p>Download dostępny po zakupie</p>
-  <button class="btn" onclick="download()">Download</button>
-  <p id="status"></p>
- </div>
-</div>
+    <h2 class="section-title gradient">
+        Pricing
+    </h2>
+
+    <div class="pricing">
+
+        <div class="card">
+
+            <div class="plan">MONTHLY</div>
+
+            <div class="price">20 zł</div>
+
+            <ul>
+                <li>Private build</li>
+                <li>Premium modules</li>
+                <li>Discord support</li>
+            </ul>
+
+            <button class="buy" onclick="buy()">
+                Purchase
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <div class="plan">YEARLY</div>
+
+            <div class="price">35 zł</div>
+
+            <ul>
+                <li>Best value</li>
+                <li>Priority updates</li>
+                <li>Private access</li>
+            </ul>
+
+            <button class="buy" onclick="buy()">
+                Purchase
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <div class="plan">LIFETIME</div>
+
+            <div class="price">50 zł</div>
+
+            <ul>
+                <li>Permanent access</li>
+                <li>All future updates</li>
+                <li>Exclusive content</li>
+            </ul>
+
+            <button class="buy" onclick="buy()">
+                Purchase
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- CONTACT -->
-<div id="contact" class="page">
- <h1>Kontakt</h1>
- <div class="box">
-  <p>Discord: sigma_karp1</p>
-  <p>Telegram: bryla_cheater</p>
- </div>
-</div>
+
+<section id="contact" class="page">
+
+    <h2 class="section-title gradient">
+        Contact
+    </h2>
+
+    <div class="contact-box">
+
+        <p>Discord: sigma_karp1</p>
+        <p>Telegram: bryla_cheater</p>
+
+    </div>
+
+</section>
 
 <script>
 
-/* NAVIGATION */
+/* ===== PAGE NAVIGATION ===== */
+
 function show(id){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.page').forEach(page=>{
+        page.classList.remove('active');
+    });
+
+    document.getElementById(id).classList.add('active');
+
 }
 
-/* CURSOR LIGHT */
+/* ===== CURSOR LIGHT ===== */
+
 document.addEventListener('mousemove',e=>{
- const l=document.getElementById('light');
- l.style.left=e.clientX+'px';
- l.style.top=e.clientY+'px';
+
+    const light=document.getElementById('light');
+
+    light.style.left=e.clientX+'px';
+    light.style.top=e.clientY+'px';
+
 });
 
-/* BUY */
+/* ===== BUY ===== */
+
 function buy(){
- localStorage.setItem('bought','true');
- window.location.href="https://discord.gg/2qNDXrMX5";
+
+    window.location.href="https://discord.gg/2qNDXrMX5";
+
 }
 
-/* LOGIN */
-function login(){
- localStorage.setItem('logged','true');
- show('panel');
-}
+/* ===== DOWNLOAD ===== */
 
-/* DOWNLOAD */
 function download(){
- if(localStorage.getItem('bought')==='true'){
-  document.getElementById('status').innerText='Pobieranie...';
- }else{
-  document.getElementById('status').innerText='Kup dostęp najpierw';
- }
+
+    window.location.href="https://yourdownloadlink.com";
+
 }
 
 </script>
